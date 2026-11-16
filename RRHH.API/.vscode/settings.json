@@ -3,6 +3,10 @@
         "Dtos",
         "Getall",
         "oldemployee",
-        "RRHH"
+        "paginacion",
+        "parametros",
+        "redirección",
+        "RRHH",
+        "Sqlite"
     ]
 }

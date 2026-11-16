@@ -13,5 +13,7 @@ namespace RRHH.API.Dtos.Common
         public int TotalItems { get; set; }
 
         public int TotalPages { get; set; }
+
+        public T? Items { get; set; }
     }
 }
