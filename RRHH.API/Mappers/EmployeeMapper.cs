@@ -31,10 +31,10 @@ namespace RRHH.API.Mappers
 
       public static EmployeeActionResponseDto EntityToActionResponseDto(EmployeeEntity entity)
       {
-          return new EmployeeActionResponseDto(entity.Id);
+            return new EmployeeActionResponseDto { Id = entity.Id };
       }
 
-      public static EmployeeEntity EditDToEntity(EmployeeEntity entity, EmployeeEditDto dto)
+      public static EmployeeEntity EditDtoToEntity(EmployeeEditDto dto, EmployeeEntity entity)
       {
           entity.FirstName = dto.FirstName;
           entity.LastName = dto.LastName;
@@ -42,5 +42,7 @@ namespace RRHH.API.Mappers
           entity.Gender = dto.Gender;
           return entity;
       }
+
+       
     }
 }

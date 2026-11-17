@@ -58,9 +58,9 @@ namespace RRHH.API.Controllers
 
         [HttpPut("{id}")]
 
-        public ActionResult<ResponseDto<EmployeeActionResponseDto>> Put(Guid id,[FromBody] EmployeeEditDto Dto)
+        public async Task<ActionResult<ResponseDto<EmployeeActionResponseDto>>> Put(Guid id,[FromBody] EmployeeEditDto Dto)
         {
-            var response = _employeeService.Edit(id, Dto);
+            var response = await _employeeService.EditAsync(id, Dto);
             return StatusCode(response.StatusCode, new ResponseDto<EmployeeActionResponseDto>
             {
                 Status = response.Status,
@@ -69,9 +69,9 @@ namespace RRHH.API.Controllers
             });
         }
         [HttpDelete("{id}")]
-        public ActionResult<ResponseDto<EmployeeActionResponseDto>> Delete(Guid id)
+        public async Task<ActionResult<ResponseDto<EmployeeActionResponseDto>>> Delete(Guid id)
         {
-            var response = _employeeService.Delete(id);
+            var response = await _employeeService.DeleteAsync(id);
             return StatusCode(response.StatusCode, new ResponseDto<EmployeeActionResponseDto>
             {
                 Status = response.Status,

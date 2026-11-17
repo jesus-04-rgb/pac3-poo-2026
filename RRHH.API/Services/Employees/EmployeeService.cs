@@ -9,15 +9,23 @@ using System.Net;
 using RRHH.API.Services.Employees.Constants;
 using Microsoft.EntityFrameworkCore;
 using RRHH.API.Mappers;
+using SQLitePCL;
 namespace RRHH.API.Services.Employees
 
 {
     public class EmployeeService : IEmployeeService
     {
         private readonly RRHHDbContext _context;
-        public EmployeeService(RRHHDbContext context)
+
+        private readonly int PAGE_SIZE;
+
+        private readonly int PAGE_SIZE_LIMIT;
+        public EmployeeService(RRHHDbContext context, IConfiguration configuration)
         {
             _context = context;
+            PAGE_SIZE = configuration.GetValue<int>("PageSize");
+            PAGE_SIZE_LIMIT = configuration.GetValue<int>("PageSizeLimit");
+
         }
     public ResponseDto<PageDto<List<EmployeeDtos>>> GetPage(string searchTerm = "", int page = 1, int pageSize = 10)
         {
@@ -108,18 +116,44 @@ namespace RRHH.API.Services.Employees
                     Message = ResponseMessageConstant.notFound
                 };
             }
+            var entityToUpdate = EmployeeMapper.EditDtoToEntity(Dto, entity);
 
-           var entityToUpdate = EmployeeMapper.EditDToEntity(entity, Dto);
-            
             _context.Employees.Update(entityToUpdate);
+
+            await _context.SaveChangesAsync();
+
+           return new ResponseDto<EmployeeActionResponseDto>
+           {
+                    StatusCode = HttpStatusCodeConstant.OK,
+                    Status = true,
+                    Message = ResponseMessageConstant.Updated,
+                    Data = EmployeeMapper.EntityToActionResponseDto(entityToUpdate)
+               
+           };
+        }
+         public async Task<ResponseDto<EmployeeActionResponseDto>> DeleteAsync(Guid id)
+        {
+            var entity = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
+            if (entity is null)
+            {
+                return new ResponseDto<EmployeeActionResponseDto>
+                {
+                    StatusCode = HttpStatusCodeConstant.NotFound,
+                    Status = false,
+                    Message = ResponseMessageConstant.notFound
+                };
+            }
+            _context.Employees.Remove(entity);
             
             await _context.SaveChangesAsync();
-               
 
-        }
-         public ResponseDto<EmployeeActionResponseDto> Delete(Guid id)
-        {
-            throw new NotImplementedException();
+            return new ResponseDto<EmployeeActionResponseDto>
+            {
+                StatusCode = HttpStatusCodeConstant.OK,
+                Status = true,
+                Message = ResponseMessageConstant.Deleted,
+                Data = new EmployeeActionResponseDto { Id = id }
+            };  
         }
 
     }
