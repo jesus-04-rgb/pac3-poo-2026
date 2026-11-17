@@ -1,0 +1,30 @@
+info:
+  name: Create Employee
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{PATH_URL}}/employees"
+  body:
+    type: json
+    data: |-
+      {
+         "firstName": "Pedro",
+        "lastName":"Gonzales",
+        "dni": "0413199800076",
+        "gender": "M"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+
+docs: |-
+  # **Endpoint para obtener un empleado**
+
+  **El path es  /api/employees/{DNI}**

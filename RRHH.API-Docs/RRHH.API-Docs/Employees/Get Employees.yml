@@ -1,0 +1,24 @@
+info:
+  name: Get Employees
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{PATH_URL}}/employees/34d46751-f338-4b65-94bd-326c73403a38"
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+
+docs: |-
+  Cliente > realiza peticion 
+  API > recibe la peticion de su controlador identifica el recurso
+  API > ejecuta el metodo correspondiente

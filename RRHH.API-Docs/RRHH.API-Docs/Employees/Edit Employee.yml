@@ -1,0 +1,31 @@
+info:
+  name: Edit Employee
+  type: http
+  seq: 1
+
+http:
+  method: PUT
+  url: "{{PATH_URL}}/employees/6b035a6c-6598-457d-960a-a9a5d4fc2774"
+  body:
+    type: json
+    data: |-
+      {
+         "firstName": "Pedro | Editado",
+        "lastName":"Gonzales | Editado",
+        "dni": "0413199800076",
+        "gender": "M",
+        "id": 3
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
+
+docs: |-
+  # **Endpoint para obtener un empleado**
+
+  **El path es  /api/employees/{DNI}**
