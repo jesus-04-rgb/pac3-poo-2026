@@ -8,7 +8,7 @@ namespace RRHH.API.Services.Employees
     public interface IEmployeeService
     {
 
-        ResponseDto<PageDto<List<EmployeeDtos>>> GetPage(string searchTerm = "", int page = 1, int pageSize = 10);
+        Task<ResponseDto<PageDto<List<EmployeeDtos>>>> GetPageAsync(string searchTerm = "", int page = 1, int pageSize = 10);
         
         Task<ResponseDto<EmployeeOneDto>> GetOneByIdAsync(Guid id);
 
@@ -17,9 +17,7 @@ namespace RRHH.API.Services.Employees
          Task<ResponseDto<EmployeeActionResponseDto>> EditAsync(Guid id,EmployeeEditDto Dto);
 
          Task<ResponseDto<EmployeeActionResponseDto>> DeleteAsync(Guid id);
-  
-
-  
+        
     }
 
     

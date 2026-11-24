@@ -11,6 +11,7 @@ namespace RRHH.API.Services.Employees.Constants
         public const string Updated = "el registro ha sido editado";
 
         public const string Deleted = "el registro ha sido eliminado correctamente";
-
+        
+        public const string registers_found = "se han encontrado registros";
     }
 }

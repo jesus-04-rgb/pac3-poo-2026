@@ -9,5 +9,6 @@ namespace RRHH.API.Dtos.Employees
         public string? DNI { get; set; }
 
         public string? Gender{ get; set; }
+        public string? FirstName { get; internal set; }
     }
 }

@@ -17,13 +17,13 @@ namespace RRHH.API.Controllers
         {
             _employeeService = employeeService;
 
-            
+                 
         }
         [HttpGet]
-        public ActionResult<ResponseDto<PageDto<List<EmployeeDtos>>>>GetAll(string searchTerm = "", int page = 1, int pageSize = 10)
+        public async Task<ActionResult<ResponseDto<PageDto<List<EmployeeDtos>>>>>GetAll(string searchTerm = "", int page = 1, int pageSize = 10)
         {
             
-         var response = _employeeService.GetPage(searchTerm, page, pageSize);
+         var response = await _employeeService.GetPageAsync(searchTerm, page, pageSize);
 
            return StatusCode(response.StatusCode, new ResponseDto<PageDto<List<EmployeeDtos>>>
 

@@ -1,7 +1,10 @@
 namespace RRHH.API.Dtos.Common
 {
-    public class PageDto<T>
+   
+    public class PageDto<T> 
     {
+        internal int pageSize;
+
         public int currentPage { get; set; }
 
         public bool hasNextPage { get; set; }

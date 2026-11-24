@@ -20,6 +20,8 @@ namespace RRHH.API.Services.Employees
         private readonly int PAGE_SIZE;
 
         private readonly int PAGE_SIZE_LIMIT;
+        private int totalItems;
+
         public EmployeeService(RRHHDbContext context, IConfiguration configuration)
         {
             _context = context;
@@ -27,39 +29,52 @@ namespace RRHH.API.Services.Employees
             PAGE_SIZE_LIMIT = configuration.GetValue<int>("PageSizeLimit");
 
         }
-    public ResponseDto<PageDto<List<EmployeeDtos>>> GetPage(string searchTerm = "", int page = 1, int pageSize = 10)
+    public async Task<ResponseDto<PageDto<List<EmployeeDtos>>>> GetPageAsync
+    (string searchTerm = "", int page = 1, int pageSize = 10)
         {
-            throw new NotImplementedException();
-        }
-        public ResponseDto<EmployeeOneDto> GetOneById(Guid id)
-        {
-            var entity = _context.Employees.FirstOrDefault(e => e.Id == id);
+            page = Math.Abs(page);
+            pageSize = pageSize <=0 ? PAGE_SIZE : pageSize; 
+            pageSize = pageSize > PAGE_SIZE_LIMIT ? PAGE_SIZE_LIMIT : pageSize; 
 
-            if(entity is null)
+            int startIndex = (page -1) * pageSize;
+
+            IQueryable<EmployeeEntity> employeeQuery = _context.Employees;
+
+            if(!string.IsNullOrEmpty(searchTerm))
             {
-                return new ResponseDto<EmployeeOneDto>
-                {
-                  StatusCode = HttpStatusCodeConstant.NotFound,
-                  Status = false,
-                  Message = ResponseMessageConstant.notFound,
-                };
+                employeeQuery = employeeQuery
+                .Where(e=>(e.FirstName + " " + e.LastName + " " + e.DNI + " " + e.Gender)
+                .Contains(searchTerm));
+                
             }
-            return new ResponseDto<EmployeeOneDto>
+            int totalRecords = await employeeQuery.CountAsync();
+
+            var employees = await employeeQuery
+                .OrderBy(e => e.FirstName)
+                .Skip(startIndex)
+                .Take(pageSize)
+                .ToListAsync();
+
+
+            return new ResponseDto<PageDto<List<EmployeeDtos>>>
             {
                 StatusCode = HttpStatusCodeConstant.OK,
-                  Status = true,
-                  Message = ResponseMessageConstant.found,
-                  Data = new EmployeeOneDto
-                  {
-                      Id = entity.Id,
-                      FirstName = entity.FirstName,
-                      LastName = entity.LastName,
-                      DNI = entity.DNI,
-                      Gender = entity.Gender,
-                  }  
+                Status = true,
+                Message = ResponseMessageConstant.found,
+                Data = new PageDto<List<EmployeeDtos>>()
+                {
+                    currentPage = page,
+                    PageSize = pageSize,
+                    TotalItems = totalItems,
+                    TotalPages = (int)Math.Ceiling((double)totalItems / pageSize), 
+                    hasNextPage = page < (int)Math.Ceiling((double)totalItems / pageSize),
+                    hasPreviousPage = page > 1,
+                    Items = EmployeeMapper.ListEntityToListDto(employees) 
+                   
+                }
             };
-        }
 
+        }
         public async Task<ResponseDto<EmployeeOneDto>> GetOneByIdAsync(Guid id)
         
         {
@@ -79,7 +94,7 @@ namespace RRHH.API.Services.Employees
             {
                 StatusCode = HttpStatusCodeConstant.OK,
                 Status = true,
-                Message = ResponseMessageConstant.found,
+                Message = ResponseMessageConstant.registers_found,
                 Data = EmployeeMapper.EntityToOneDto(entity)
             };
         }
@@ -98,7 +113,7 @@ namespace RRHH.API.Services.Employees
                 Status = true,
                 Message = ResponseMessageConstant.created,
                 Data = EmployeeMapper.EntityToActionResponseDto(entity)
-
+                
                
             };
         }

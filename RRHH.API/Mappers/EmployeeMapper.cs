@@ -42,7 +42,21 @@ namespace RRHH.API.Mappers
           entity.Gender = dto.Gender;
           return entity;
       }
+      
+      public static List<EmployeeDtos> ListEntityToListDto(List<EmployeeEntity> employeesEntity) 
+      {
+          return employeesEntity.Select(entity => new EmployeeDtos
+          {
+              Id = entity.Id,
+              FullName = $"{entity.FirstName} {entity.LastName}",
+              DNI = entity.DNI,
+              Gender = entity.Gender,
+          }).ToList();
+      }
 
-       
+        internal static List<EmployeeDtos> ListEntityToListDto(object employeesEntity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
