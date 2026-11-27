@@ -63,6 +63,119 @@ namespace RRHH.API.Migrations
 
                     b.ToTable("employee");
                 });
+
+            modelBuilder.Entity("RRHH.API.Entities.FeedbackEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Comment");
+
+                    b.Property<string>("CreateById")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("create_by_id");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("create_date");
+
+                    b.Property<Guid>("EmployeeId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("employee_id");
+
+                    b.Property<Guid>("FeedbackTypeId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("feedback_type_id");
+
+                    b.Property<Guid>("GivenById")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Given_By_Id");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("Title");
+
+                    b.Property<string>("UpdateById")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("update_by_id");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("update_date");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("FeedbackTypeId");
+
+                    b.ToTable("feedbacks");
+                });
+
+            modelBuilder.Entity("RRHH.API.Entities.FeedbackTypeEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("id");
+
+                    b.Property<string>("CreateById")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("create_by_id");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("create_date");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("description");
+
+                    b.Property<string>("UpdateById")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("update_by_id");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("update_date");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("feedback_types");
+                });
+
+            modelBuilder.Entity("RRHH.API.Entities.FeedbackEntity", b =>
+                {
+                    b.HasOne("RRHH.API.Entities.EmployeeEntity", "Employee")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RRHH.API.Entities.FeedbackTypeEntity", "FeedbackType")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("FeedbackTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("FeedbackType");
+                });
+
+            modelBuilder.Entity("RRHH.API.Entities.EmployeeEntity", b =>
+                {
+                    b.Navigation("Feedbacks");
+                });
+
+            modelBuilder.Entity("RRHH.API.Entities.FeedbackTypeEntity", b =>
+                {
+                    b.Navigation("Feedbacks");
+                });
 #pragma warning restore 612, 618
         }
     }

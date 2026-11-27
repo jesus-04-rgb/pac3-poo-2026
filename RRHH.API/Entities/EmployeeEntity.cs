@@ -21,6 +21,8 @@ namespace RRHH.API.Entities
         [Column("gender")]
         public string? Gender { get; set; }
 
+        public virtual IEnumerable<FeedbackEntity>? Feedbacks {get; set;}
+
 
 
     }

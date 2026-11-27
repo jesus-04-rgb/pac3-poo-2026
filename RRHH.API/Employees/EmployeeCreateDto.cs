@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using RRHH.API.Validations;
 namespace RRHH.API.Dtos.Employees
 {
-    public class EmployeeCreateDto
+    public class EmployeeCreateDto 
     {    
          [Display(Name = "Nombres")]
          [Required(ErrorMessage = "Los {0} son obligatorios")]
@@ -23,8 +23,9 @@ namespace RRHH.API.Dtos.Employees
           [Required(ErrorMessage = "El {0} es obligatorio")]
          [MaxLength(1, ErrorMessage = "El {0} no puede tener mas de {1} caracteres")]
         public string? Gender { get; set; }
+           
 
         
-
+            
     }
 }

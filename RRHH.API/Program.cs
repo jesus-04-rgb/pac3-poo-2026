@@ -1,5 +1,6 @@
 using Scalar.AspNetCore;
 using RRHH.API.Services.Employees;
+using RRHH.API.Services.Feedbacks;
 using Microsoft.EntityFrameworkCore;
 using RRHH.API.Database;
 
@@ -15,6 +16,8 @@ builder.Services.AddDbContext<RRHHDbContext>(options =>
 );
 
 builder.Services.AddTransient<IEmployeeService, EmployeeService>();
+builder.Services.AddTransient<IFeedbackService, FeedbackService>(); //inyección de dependencias para el servicio de feedbacks
+
 
 var app = builder.Build();  
 

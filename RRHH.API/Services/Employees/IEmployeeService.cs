@@ -17,6 +17,8 @@ namespace RRHH.API.Services.Employees
          Task<ResponseDto<EmployeeActionResponseDto>> EditAsync(Guid id,EmployeeEditDto Dto);
 
          Task<ResponseDto<EmployeeActionResponseDto>> DeleteAsync(Guid id);
+
+         
         
     }
 

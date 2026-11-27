@@ -10,6 +10,11 @@ namespace RRHH.API.Database
             
         }
         public DbSet<EmployeeEntity> Employees { get; set; }
+
+       public DbSet<FeedbackTypeEntity>? FeedbackTypes { get; set; }
         
+        public DbSet<FeedbackEntity>? Feedbacks { get; set; }
     }
+
+   
 }
